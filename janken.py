@@ -38,9 +38,19 @@ def handle_message(event):
   profile = line_bot_api.get_profile(uId)
   name = profile.display_name
 
-  # save Player
-  player = Player(lineId = uId, displayName = name)
-  player.save()
+  # query player with uId
+  thisPlayer = Player.query.filter_by(lineId=uId).first()
+  # if player is new
+  if thisPlayer is none:
+    # save Player
+    player = Player(lineId = uId, displayName = name)
+    player.save()
+    print "player saved!"
+  else:
+    win = thisPlayer.win
+    lose = thisPlayer.lose
+    print "win:" + str(win)
+
 
   # reply
   line_bot_api.reply_message(

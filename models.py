@@ -16,6 +16,8 @@ db  = PostgresqlDatabase(
 class Player(Model):
     lineId      = CharField()
     displayName = CharField()
+    win         = IntegerField()
+    lose        = IntegerField()
 
     class Meta:
         database = db
@@ -24,3 +26,5 @@ class Player(Model):
         super(Player, self).__init__()
         self.lineId = lineId
         self.displayName = displayName
+        self.win  = 0
+        self.lose = 0
