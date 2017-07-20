@@ -14,7 +14,7 @@ db  = PostgresqlDatabase(
 
 # model definition
 class Player(Model):
-    lineId      = BigIntegerField()
+    lineId      = CharField()
     displayName = CharField()
 
     class Meta:
