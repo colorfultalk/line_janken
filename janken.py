@@ -8,11 +8,17 @@ from linebot.models import (
 import os
 
 # user defined modules
-from models import Player
+from models import Player, db
 
 app = Flask(__name__)
 line_bot_api = LineBotApi(os.environ['CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['CHANNEL_SECRET'])
+
+def before_request_handler():
+  db.connect()
+
+def after_request_handler():
+  db.close()
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -39,7 +45,7 @@ def handle_message(event):
   name = profile.display_name
 
   # query player with uId
-  thisPlayer = Player.get(lineId=uId)
+  thisPlayer = Player.get(lineId==uId)
   # if player is new
   if thisPlayer is none:
     # save Player

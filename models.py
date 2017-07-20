@@ -3,30 +3,31 @@ from urllib.parse import urlparse
 import psycopg2, os
 
 # for heroku db connection
-url = urlparse(os.environ["DATABASE_URL"])
-db  = PostgresqlDatabase(
+
+if 'HEROKU' in os.environ:
+  url = urlparse(os.environ["DATABASE_URL"])
+  db  = PostgresqlDatabase(
         database=url.path[1:],
         user=url.username,
         password=url.password,
         host=url.hostname,
         port=url.port
-     )
-
+  )
+else: 
+  db = PostgresqlDatabase(
+    database = 'janken',
+    user     = 'yoshiharu-i',
+    host     = 'localhost'
+  )
+ 
 # model definition
-class Player(Model):
+class PostgresqlModel(Model):
+  """ A base model """
+  class Meta:
+    database = db
+
+class Player(PostgresqlModel):
     lineId      = CharField()
     displayName = CharField()
-    win         = IntegerField()
-    lose        = IntegerField()
-
-    class Meta:
-        database = db
-
-    def __init__(self, lineId, displayName):
-        super(Player, self).__init__()
-        self.lineId = lineId
-        self.displayName = displayName
-        self.win  = 0
-        self.lose = 0
-
-db.connect()
+    win         = IntegerField(default=0)
+    lose        = IntegerField(default=0)
