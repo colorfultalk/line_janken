@@ -34,12 +34,12 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
   # get user_id from event
-  lId = event.source.user_id
+  uId = event.source.user_id
   profile = line_bot_api.get_profile(uId)
   name = profile.display_name
 
   # save Player
-  player = Player(lineId = lId, displayName = name)
+  player = Player(lineId = uId, displayName = name)
   player.save()
 
   # reply
