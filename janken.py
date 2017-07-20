@@ -54,6 +54,7 @@ def handle_message(event):
     player.save()
     print( "player saved!" )
   else:
+    thisPlayer = query.get()
     win = thisPlayer.win
     lose = thisPlayer.lose
     print( "win:" + str(win) )
