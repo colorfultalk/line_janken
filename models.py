@@ -21,6 +21,6 @@ class Player(Model):
         database = db
 
     def __init__(self, lineId, displayName):
-        super(Guest, self).__init__()
+        super(Player, self).__init__()
         self.lineId = lineId
         self.displayName = displayName
