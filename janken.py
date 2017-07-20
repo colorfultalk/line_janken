@@ -45,11 +45,11 @@ def handle_message(event):
     # save Player
     player = Player(lineId = uId, displayName = name)
     player.save()
-    print "player saved!"
+    print( "player saved!" )
   else:
     win = thisPlayer.win
     lose = thisPlayer.lose
-    print "win:" + str(win)
+    print( "win:" + str(win) )
 
 
   # reply
