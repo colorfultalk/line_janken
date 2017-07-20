@@ -45,9 +45,10 @@ def handle_message(event):
   name = profile.display_name
 
   # query player with uId
-  thisPlayer = Player.get(Player.lineId==uId)
+  ## thisPlayer = Player.get(Player.lineId==uId)
+  query = Player.select().where(Player.lineId == uId)
   # if player is new
-  if thisPlayer is none:
+  if not( query.exists() ):
     # save Player
     player = Player(lineId = uId, displayName = name)
     player.save()
