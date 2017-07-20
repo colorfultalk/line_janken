@@ -39,7 +39,7 @@ def handle_message(event):
   name = profile.display_name
 
   # query player with uId
-  thisPlayer = Player.query.filter_by(lineId=uId).first()
+  thisPlayer = Player.get(lineId=uId)
   # if player is new
   if thisPlayer is none:
     # save Player

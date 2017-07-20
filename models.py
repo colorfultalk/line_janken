@@ -28,3 +28,5 @@ class Player(Model):
         self.displayName = displayName
         self.win  = 0
         self.lose = 0
+
+db.connect()
