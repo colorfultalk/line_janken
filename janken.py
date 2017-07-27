@@ -6,14 +6,15 @@ from linebot import (
 from linebot.models import (
   MessageEvent, TextMessage, TextSendMessage,
 )
-import os
+import os, random
 
 # user defined modules
 from models import Player, db
 # user define constants
-ROCK  = 100
-PAPER = 200
+ROCK     = 100
+PAPER    = 200
 SCISSORS = 300
+HANDS    = [ROCK, PAPER, SCISSORS]
 
 app = Flask(__name__)
 line_bot_api = LineBotApi(os.environ['CHANNEL_ACCESS_TOKEN'])
@@ -24,6 +25,19 @@ def before_request_handler():
 
 def after_request_handler():
   db.close()
+
+def playJanken(playerHand):
+    enemyHand = random.choice(HANDS)
+    if enemyHand == playerHand:
+        return "draw"
+    if enemyHand == ROCK and playerHand == PAPER:
+        return "win"
+    elif enemyHand == PAPER and playerHand == SCISSORS:
+        return "win"
+    elif enemyHand == SCISSORS and playerHand == ROCK:
+        return "win"
+    else:
+        return "lose"
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -67,11 +81,26 @@ def handle_message(event):
   text = event.message.text
   print( text )
 
-  # reply
-  line_bot_api.reply_message(
-    event.reply_token,
-    TextSendMessage(text=event.message.text)
-  )
+  if text == u'ぐー':
+      playerHand = ROCK
+      judge = playJanken(playerHand)
+      if judge == "win":
+          reply_text = "you win"
+      elif judge == "lose":
+          reply_text = "you lose"
+      else:
+          reply_text = "draw"
+      # reply
+      line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=event.message.text)
+      )
+  else:
+    # reply
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=event.message.text)
+    )
 
 if __name__ == "__main__":
   app.run()
