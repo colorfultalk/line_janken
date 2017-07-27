@@ -26,7 +26,7 @@ def before_request_handler():
 def after_request_handler():
   db.close()
 
-def playJanken(playerHand):
+def judgeJanken(playerHand):
     enemyHand = random.choice(HANDS)
     if enemyHand == playerHand:
         return "draw"
@@ -38,6 +38,18 @@ def playJanken(playerHand):
         return "win"
     else:
         return "lose"
+
+def playJanken(playerHand):
+    judge = judgeJanken(playerHand)
+
+    if judge == "win":
+        reply_text = "you win"
+    elif judge == "lose":
+        reply_text = "you lose"
+    else:
+        reply_text = "draw"
+
+    return reply_text
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -83,17 +95,11 @@ def handle_message(event):
 
   if text == u'ぐー':
       playerHand = ROCK
-      judge = playJanken(playerHand)
-      if judge == "win":
-          reply_text = "you win"
-      elif judge == "lose":
-          reply_text = "you lose"
-      else:
-          reply_text = "draw"
+      reply_text = playJanken(playerHand)
       # reply
       line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=event.message.text)
+        TextSendMessage(text=reply_text)
       )
   else:
     # reply
