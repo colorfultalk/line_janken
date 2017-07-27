@@ -87,7 +87,6 @@ def handle_message(event):
     player = query.get()
     win = player.win
     lose = player.lose
-    print( "win:" + str(win) )
 
   # store user's text
   text = event.message.text
@@ -101,11 +100,29 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(text=reply_text)
       )
+  elif text == u'ちょき':
+      playerHand = SCISSORS
+      reply_text = playJanken(playerHand)
+      # reply
+      line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=reply_text)
+      )
+  elif text == u'ぱー':
+      playerHand = PAPER
+      reply_text = playJanken(playerHand)
+      # reply
+      line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=reply_text)
+      )
   else:
+    win = player.win
+    reply_text = "win:" + str(win)
     # reply
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=event.message.text)
+        TextSendMessage(text=reply_text)
     )
 
 if __name__ == "__main__":
