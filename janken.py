@@ -85,13 +85,12 @@ def handle_message(event):
     print( "player saved!" )
   else:
     player = query.get()
-    win = player.win
-    lose = player.lose
 
   # store user's text
   text = event.message.text
   print( text )
 
+  # play janken
   if text == u'ぐー':
       playerHand = ROCK
       reply_text = playJanken(playerHand)
@@ -124,6 +123,11 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(text=reply_text)
     )
+
+  if reply_text == "you win":
+      win = player.win
+      player.win = win + 1
+      player.save()
 
 if __name__ == "__main__":
   app.run()
