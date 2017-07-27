@@ -1,3 +1,4 @@
+# coding: UTF-8
 from flask import Flask, request, abort
 from linebot import (
   LineBotApi, WebhookHandler
@@ -9,6 +10,10 @@ import os
 
 # user defined modules
 from models import Player, db
+# user define constants
+ROCK  = 100
+PAPER = 200
+SCISSORS = 300
 
 app = Flask(__name__)
 line_bot_api = LineBotApi(os.environ['CHANNEL_ACCESS_TOKEN'])
@@ -45,7 +50,6 @@ def handle_message(event):
   name = profile.display_name
 
   # query player with uId
-  ## thisPlayer = Player.get(Player.lineId==uId)
   query = Player.select().where(Player.lineId == uId)
   # if player is new
   if not( query.exists() ):
@@ -54,11 +58,14 @@ def handle_message(event):
     player.save()
     print( "player saved!" )
   else:
-    thisPlayer = query.get()
-    win = thisPlayer.win
-    lose = thisPlayer.lose
+    player = query.get()
+    win = player.win
+    lose = player.lose
     print( "win:" + str(win) )
 
+  # store user's text
+  text = event.message.text
+  print( text )
 
   # reply
   line_bot_api.reply_message(
