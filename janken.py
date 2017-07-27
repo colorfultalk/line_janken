@@ -124,9 +124,14 @@ def handle_message(event):
         TextSendMessage(text=reply_text)
     )
 
+  # update player data
   if reply_text == "you win":
       win = player.win
       player.win = win + 1
+      player.save()
+  elif reply_text == "you lose":
+      lose = player.lose
+      player.lose = lose + 1
       player.save()
 
 if __name__ == "__main__":
