@@ -13,4 +13,4 @@ peewee==2.10.1
 psycopg2==2.7.1
 requests==2.18.1
 urllib3==1.21.1
-Werkzeug==0.12.2
+Werkzeug==0.15.3
